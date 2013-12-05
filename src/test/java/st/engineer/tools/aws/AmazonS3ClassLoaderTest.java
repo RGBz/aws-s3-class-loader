@@ -59,7 +59,7 @@ public class AmazonS3ClassLoaderTest extends TestCase {
 		assertNotNull(classLoader.getResource("rgbz.Coordinate.class"));
 		assertTrue(IOUtils.contentEquals(
 				FileUtils.openInputStream(new File(TEST_CLASS_RESOURCES_DIR + "/rgbz.Coordinate.class")),
-				classLoader.getResourceAsStream("rgbz.Coordinate.class")));
+				classLoader.getResourceAsStream("rgbz.Coordinate")));
 	}
 	
 	@Test
@@ -75,14 +75,13 @@ public class AmazonS3ClassLoaderTest extends TestCase {
 	
 	private void uploadTestClassFiles() {
 		for (String className : TEST_CLASS_NAMES) {
-			File classFile = new File(TEST_CLASS_RESOURCES_DIR + "/" + className + ".class");
-			s3.putObject(TEST_BUCKET_NAME, classFile.getName(), classFile);
+			s3.putObject(TEST_BUCKET_NAME, className, new File(TEST_CLASS_RESOURCES_DIR + "/" + className + ".class"));
 		}
 	}
 	
 	private void deleteTestClassFiles() {
 		for (String className : TEST_CLASS_NAMES) {
-			s3.deleteObject(TEST_BUCKET_NAME, className + ".class");
+			s3.deleteObject(TEST_BUCKET_NAME, className);
 		}
 	}
 }

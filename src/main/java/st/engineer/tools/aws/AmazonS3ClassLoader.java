@@ -47,8 +47,7 @@ public class AmazonS3ClassLoader extends ClassLoader {
 		return defineClass(name, classBytes, 0, classBytes.length);
 	}
 	
-	private byte[] getClassBytes(String name) throws ClassNotFoundException {
-		String key = name + ".class";
+	private byte[] getClassBytes(String key) throws ClassNotFoundException {
 		try {
 			int contentLength = (int) s3.getObjectMetadata(bucketName, key).getContentLength();
 			byte[] bytes = new byte[contentLength];
